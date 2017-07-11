@@ -129,7 +129,12 @@ console.log( 'The total number of transactions is:', totalTransactions );
   HINT(S):
   - Not all transactions are 'sales'.
 */
-var numSales;
+function sales(element) {
+  return element.type === 'sale';
+}
+var totalSales = transactions.filter(sales)
+var numSales = totalSales.length;
+
 
 /*
   Hey, welcome to the first question!
@@ -159,7 +164,14 @@ console.log( 'The total number of sales is:', numSales );
 /*
   Calculate the total number of 'purchases'.
 */
-var numPurchases;
+function purchases(element) {
+  return element.type === 'purchase';
+}
+
+var totalPurchases = transactions.filter(purchases);
+var numPurchases = totalPurchases.length;
+
+
 
 console.log( 'The total number of purchases is:', numPurchases );
 
@@ -173,7 +185,11 @@ console.log( 'The total number of purchases is:', numPurchases );
   HINT(S):
   - Don't forget that 'purchases' can also be made in 'cash'!
 */
-var numCashSales;
+function cashSales(element) {
+  return element.type === 'sale' && element.paymentMethod === 'cash';
+}
+var totalCashSales = transactions.filter(cashSales);
+var numCashSales = totalCashSales.length;
 
 console.log( 'The total number of cash sales is:', numCashSales );
 
@@ -186,8 +202,14 @@ console.log( 'The total number of cash sales is:', numCashSales );
 
   HINT(S):
   - Make sure to exclude any 'sales' made by 'credit'!
+
 */
-var numCreditPurchases;
+
+function creditPurchases(element) {
+  return element.type === 'purchase' && element.paymentMethod === 'credit';
+}
+var totalCreditPurchases = transactions.filter(creditPurchases);
+var numCreditPurchases = totalCreditPurchases.length;
 
 console.log( 'The total number of credit purchases is:', numCreditPurchases );
 
@@ -204,7 +226,16 @@ console.log( 'The total number of credit purchases is:', numCreditPurchases );
   - The assembled array should be made up of strings, not full `transaction` objects.
   - This array is allowed to contain duplicate values.
 */
-var uniqueVendors;
+
+var uniqueVendors = [];
+
+function getVendors(element) {
+  if (element.vendor != undefined) {
+    uniqueVendors.push(element.vendor);
+  }
+}
+
+transactions.filter(getVendors);
 
 console.log( 'The unique vendors are:', uniqueVendors );
 
@@ -221,7 +252,22 @@ console.log( 'The unique vendors are:', uniqueVendors );
   - The assembled array should be made up of strings, not full `transaction` objects.
   - Make sure that the resulting array *does not* include any duplicates.
 */
-var uniqueCustomers;
+
+var customers = [];
+
+function getCustomers(element) {
+  if (element.customer != undefined) {
+    customers.push(element.customer);
+  }
+}
+transactions.filter(getCustomers);
+
+function onlyUnique(value, index, self) {
+  return self.indexOf(value) === index;
+
+}
+
+var uniqueCustomers = customers.filter(onlyUnique);
 
 console.log( 'The unique customers are:', uniqueCustomers );
 
@@ -239,7 +285,16 @@ console.log( 'The unique customers are:', uniqueCustomers );
   - There may be more than 1 'sale' that includes 5 or more items.
   - Individual transactions do not have either `name` or `numItems` properties, we'll have to add them to the output.
 */
-var bigSpenders;
+
+
+function getSaleTransactionsWithFiveOrMoreItems(element) {
+  if (element.type === 'sale' && element.items.length >= 5) {
+     return {name: element.customer, numItems: element.items.length};
+  }
+}
+
+
+var bigSpenders = transactions.filter(getSaleTransactionsWithFiveOrMoreItems).map(getSaleTransactionsWithFiveOrMoreItems);
 
 console.log( 'The "big spenders" are:', bigSpenders );
 
@@ -253,7 +308,11 @@ console.log( 'The "big spenders" are:', bigSpenders );
   HINT(S):
   - Transactions don't have 'prices', but their 'items' do!
 */
-var sumSales;
+
+
+
+
+var sumSales = firstSale.filter(getCostOfFirstSale);
 
 console.log( 'The sum of all sales is:', sumSales );
 
